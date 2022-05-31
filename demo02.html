@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,21 +10,12 @@
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 </head>
+
 <body>
-    <div id="root"></div>
+    <div id="root">修改</div>
     <script type="text/babel">
-        let text="百度";
-        let divHtml=<div>
-            <a href="https://www.baidu.com">{text}</a><br/>
-            <button onClick={changeText}>改为网易</button>
-        </div>
-        function changeText(){
-            //改为网易
-            //text="网易";
-            document.getElementsByTagName("a")[0].innerHTML="网易";
-        }
-       
-        ReactDOM.render(divHtml,document.getElementById("root"));
+
     </script>
 </body>
+
 </html>
