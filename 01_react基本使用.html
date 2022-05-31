@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <!-- 引入babel:帮我们读取jsx语法 -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 给script标签添加tyep属性："text/babel",目的就是为了在script标签里面编写jsx语句 -->
+    <script type="text/babel">
+        // 创建真实dom的方法
+        // var p=document.createElement('p')
+        // p.innerHTML='内容'
+        // 通过react创建虚拟dom,
+        // createElement()方法需要传入3个参数：
+        /*
+            第一：html标签名
+            第二：标签的属性
+            第三：标签的子节点
+        */
+        // var p = React.createElement('a', {href:'https://www.baidu.com'}, 'hello')
+        var container = document.getElementById('root')
+        // render()方法第一个参数就是我们要渲染的元素，第二参数，就是渲染元素挂载的节点
+        // ReactDOM.render(p, container)
+        // var li1 = React.createElement('li', null, '第1行')
+        // var li2 = React.createElement('li', null, '第1行')
+        // var li3 = React.createElement('li', null, '第1行')
+        // var ul = React.createElement('ul', null, li1, li2, li3)
+        // var div = React.createElement('div', null, ul)
+        // ReactDOM.render(div, container)
+        var e = <div>
+            <ul>
+                <li>第1行</li>
+                <li>第2行</li>
+                <li>第3行</li>
+            </ul>
+        </div>
+        ReactDOM.render(e, container)
+    </script>
+</body>
+
+</html>

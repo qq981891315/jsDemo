@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class El extends React.Component {
+            state = {
+                a: [
+                    {
+                        name: '张三',
+                        age: 19
+                    },
+                    {
+                        name: '李四',
+                        age: 20
+                    },
+                    {
+                        name: '王五',
+                        age: 21
+                    },
+                    {
+                        name: '小黄',
+                        age: 18
+                    }
+                ]
+            }
+            render() {
+                // 列表渲染     数组->li(dom元素)   ->map()
+                
+                return (
+                    <div>
+                        <ul>
+                            {this.state.a.map((item) => {
+                                return (
+                                    <li>姓名{item.name},年龄{item.age}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            }
+
+        }
+        ReactDOM.render(<El />, document.getElementById('root'))
+    </script>
+</body>
+
+</html>

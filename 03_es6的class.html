@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        // class关键字创建一个类：用来生成对象，给对象添加属性与方法
+        class C1 {
+            a = 'hello'
+            sayHi() {
+                console.log('hi');
+            }
+        }
+        class C2 extends C1 {
+
+        }
+        // const c = new C1()
+        // const b = new C1()
+        // console.log(c,b);
+        // c.sayHi()
+        const d = new C2()
+        console.log(d);
+        d.sayHi()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class El extends React.Component {
+            state = {
+                a: 0
+            }
+            render() {
+                // let biaoti;
+                // if (this.state.a > 10) {
+                //     biaoti = <h3>当数值a的值大于10的时候显示这个h3标签</h3>
+                // } else {
+                //     biaoti = <h4>当数值a的值小于等于10的时候显示这个h4标签</h4>
+                // }
+                return (
+                    <div>
+                        <h3>数值：{this.state.a}</h3>
+                        {this.state.a > 10 ? <h3>当数值a的值大于10的时候显示这个h3标签</h3> :
+                            <h4>当数值a的值小于等于10的时候显示这个h4标签</h4>}
+                        <button onClick={this.fn1}>按钮</button>
+                    </div>
+                )
+            }
+            fn1 = () => {
+                this.setState({
+                    a: this.state.a + 1
+                })
+            }
+        }
+        ReactDOM.render(<El />, document.getElementById('root'))
+    </script>
+</body>
+
+</html>

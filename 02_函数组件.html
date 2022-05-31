@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // 函数组件的局限性：改变状态数值后，不能不能实时地去更新ui
+        function El() {
+            var a = '你好'
+            var b = (<a href="https://www.baidu.com">百度</a>)
+            function fn1(){
+                console.log(11);
+                a='hello'
+                console.log(a);
+            }
+            return (
+                <div>
+                    <p>{a}</p>
+                    <p>{1 + 1}</p>
+                    <p>{2 > 3 ? 2 : 3}</p>
+                    <p>{b}</p>
+                    <button onClick={fn1}>按钮</button>
+                </div>
+            )
+        }
+
+
+        ReactDOM.render(<El />, document.getElementById('root'))
+    </script>
+</body>
+
+</html>
