@@ -1,0 +1,576 @@
+--------------------------------------
+引入vue
+<script src="https://unpkg.com/vue@2"></script>
+
+--------------------------------------
+内容渲染：
+v-text  覆盖元素的子节点
+{{}}    可以与子节点内容结合使用
+v-html  可以渲染html标签
+
+--------------------------------------
+属性绑定:
+v-bind:        简写    :
+
+--------------------------------------
+js表达式插入
+内容指令和属性绑定指令的内容都可以插入js表达式
+
+--------------------------------------
+事件绑定:
+v-on:         简写    @
+
+事件处理的函数在 methods:{
+    fn1:function(){},
+    // 简写：
+    fn1(){}
+} 中声明
+
+给事件绑定的方法传参：
+@click="fn1(参数)"
+
+事件对象 e ：
+绑定事件时没有传参，则事件处理函数的默认参数就是事件对象
+如果绑定事件时传递了参数，可以通过传入 $event 获取事件对象
+@click="fn1(参数 $event)"
+--------------------------------------
+访问data:
+    this.xxx
+
+更新data:
+    this.xxx = yyy
+
+--------------------------------------
+事件修饰符：
+.prevent 阻止默认行为
+    @click.prevent="fn1"
+.stop 阻止冒泡
+    @click.stop="fn1"
+
+--------------------------------------
+按键修饰符：
+@keyup.xxx = "fn1"
+xxx键弹起时,触发事件
+
+--------------------------------------
+双向绑定：
+<input v-model="val" />
+
+把表单元素获取的 value 转换为 Number 
+<input v-model.number="val" />
+
+清空前后空白字符
+<input v-model.trim="val" />
+
+--------------------------------------
+条件渲染：
+v-if="条件表达式"   直接操作 dom
+v-else-if=""
+v-else
+
+v-show  操作 display 属性
+频繁切换显示与隐藏状态的话推荐 v-show ，切换不频繁则推荐 v-if
+原因: v-if 通过动态创建或移除 dom  实现显示与隐藏 v-show 操作的是元素的 display 属性
+
+--------------------------------------
+列表渲染：
+v-for="(item,index) in list"
+绑 key 提高应用的运行效率，key值必须不重复
+
+--------------------------------------
+过滤器(了解即可，后续版本将淘汰)
+<div>{{ msg | fn1 }}</div>
+
+filters:{
+        // 注意第一个参数是需要让过滤器处理的数据，第二个参数开始,在调用过滤器时传入
+    fn1(val){
+        // 过滤器函数中必须有 return 值，使msg的首字母大写
+        return  val.charAt(0).toUpperCase() + val.slice(1)
+    },
+    
+}
+
+全局过滤器：
+Vue.filter('fn1',val=>{...})        // 绑定到Vue全局，可供所有组件使用
+
+连续调用多个过滤器：
+<div>{{ msg | fn1 | fn2 ... }}</div>
+
+过滤器传参：
+<div>{{ msg | fn1(arg1,agr2) }}</div>
+
+--------------------------------------
+侦听器（简写方式）:
+watch:{
+    // 函数名就是侦听的数据，可以是 data 里面的数据，也可以是 props 里面的数据
+    msg(newVal,oldVal){ // 函数参数可以接收到 msg 更新前与更新后的值
+        // 当 msg 数据变化时触发本函数的业务
+    },
+    // 可以直接侦听对象中某属性值，注意函数名要写成字符串格式
+    'obj.xxkey'(newVal,oldVal){...}
+}
+
+侦听器（分解属性编写方式）：
+watch:{
+    msg:{
+        handler(newVal,oldVal){...},
+        immediate:true      // immediate 属性设定为 true 则实现页面加载立马触发 handler 函数
+    // deep 深度侦听，默认值为 false, 当侦听的数据类型为对象时，对象内部属性变化不会触发 handler,设定 true 后则可以触发
+        deep:true
+    }
+}
+
+--------------------------------------
+计算属性:
+<div>{{fn1}}</div>
+
+computed:{
+    fn1(){return ...}
+}
+特点：定义的是一个方法，使用的时候是一个属性
+
+--------------------------------------
+Vue中使用 axios
+引入：
+    <script src="https://unpkg.com/axios@0.27.2/dist/axios.min.js"></script>
+使用：
+    axios({
+                    method: 'GET',
+                    url: 'http:www.liulongbin.top:3006/api/getbooks'
+                }).then(res=>{
+                    console.log(res);
+                })
+
+简写：
+    axios.get('http:www.liulongbin.top:3006/api/getbooks').then(res=>{})
+
+
+(以下内容须在main.js中操作)
+
+项目中把 axios 绑定到全局：
+    import axios from 'axios'
+    Vue.prototype.$http = axios
+    然后所有组件都可以直接使用 $http 发请求了
+
+把请求的根路径共享到全局：
+    axios.default.basURL = '请求根路径'
+    然后发请求时就可以省略根路径 (仅提供请求根路径的相对路径即可)
+
+--------------------------------------
+安装 vue-cli
+作用：构建vue的单页应用(spa)
+vue-cli里面集成了 webpack、babel等前端工程工具
+
+全局安装：npm install -g @vue/cli@4.5
+检测版本：vue -V        (可以检测是否已经安装成功)
+创建项目：vue create 项目名称
+建议选择    Manually select features    (手动选择项目选项)
+注意：
+    Linter/Formatter        选项会严格约束代码 (新手建议不选)
+    CSS Pre-processors      为项目增加css预处理工具(建议选上，提高开发效率)
+
+开发环境运行：npm run serve
+
+入口文件：      main.js         el:'#app' 与 $mount('#app') 等价
+项目根组件：    App.vue
+
+vue-cli运行原理：通过main.js把App.vue的(UI)内容渲染到index.html的指定容器中
+
+--------------------------------------
+组件：      复用UI    ->包括结构、样式、业务逻辑
+    <template>
+        template里面只能有一个子元素
+    </template>
+
+    <script>
+        data需要被定义成一个函数，返回值是一个对象 return {需要访问的数据}
+        name:''     如果声明了name，注意2点：
+                                1.会显示到开发工具上
+                                2.会在 keep-alive 组件的 include 和 exclude 属性中生效
+    </script>
+
+    <style>
+        Vue中使用 sass
+        安装：npm i sass sass-loader@10
+        <style lang="scss"></style>
+        注意sass-loader的版版本不能太高（须与vue-cli版本匹配）
+
+        使用 scoped 限定样式仅在当前组件生效，防止样式冲突
+        <style scoped></style>
+
+        在使用 scoped 的前提下，要选中子组件里面的元素，
+        可以在选择器前使用关键字 /deep/     --> 实现样式穿透
+        <style scoped>
+            /deep/ button{background:#ccc}
+        </style>
+        (一般是使用第三方组件库的时候应用)
+    </style>
+
+--------------------------------------
+组件引入：
+
+    import xxx from '路径'
+    (vue-cli设置 @ 指向src根目录)
+    
+    script中需要加入components节点声明使用xxx组件
+    components:{
+        xxx
+    }
+
+在main.js中全局注册组件：
+
+    import xxx from '路径'
+    Vue.component( '起个名字' , xxx )
+    (全局注册以后所有组件都能使用该组件)
+
+
+--------------------------------------
+组件通讯：
+
+    父传子：父组件给子组件绑一个props
+
+    子传父：
+        父组件给子组件绑定一个(自定义)事件
+        子组件通过 this.$emit( '事件', 携带参数 ) 触发父组件绑定的事件同时把参数传递到父组件
+        父组件通过事件处理函数的默认参数接收子组件传来的值
+
+    兄弟组件通讯：
+
+        创建一个 eventBus.js 文件，内容如下：
+        import Vue from "vue";
+        export default new Vue()
+
+        发送方和接收方都要引入该js文件:
+        import bus from "@/utils/eventBus.js";
+
+        发送方调用bus.$emit( '事件' , 携带参数 )
+        接收方调用bus.$on( '事件' , (e)=>{e就是接收到的参数} )
+
+--------------------------------------
+组件生命周期：
+组件生命周期是指组件的创建-挂载-更新-销毁的过程
+上述过程中，vue框架提供相应阶段的生命周期函数（又称钩子函数），让我们可以在特定的阶段执行某些业务
+
+创建阶段：
+created(){
+     本阶段发生了什么：属性 props ，数据 data ，方法methods 初始化完成
+     本阶段一般会做什么：调用 methods 里面的方式发送 ajax 请求获取数据 更新 data 
+     本阶段不能做什么：结构模块 template 未挂载，所以不能操作DOM
+}
+
+挂载阶段：
+mounted(){
+     本阶段发生了什么：template 被编译，生成HTML结构
+     本阶段一般会做什么：操作DOM
+}
+
+组件更新：
+    data 或 props 更新 -> 执行 beforeUpdate() -> (对比)更新(虚拟)DOM -> 执行 updated()
+    因此如果需要在数据变化后操作最新的DOM元素，应该在updated()里面进行
+
+销毁阶段：
+    beforeDestory(){
+        组件销毁前执行，此时可以移除监听、定时器
+    }
+
+--------------------------------------
+通过ref获取dom元素：
+<h1 ref={myh1}></h1>
+通过 this.$refs.myh1 可以获取h1元素
+
+<组件 ref={com01} />
+通过 this.$refs.com01 可以获取组件示例，然后就可以调用组件里面的属性与方法
+通过给子组件添加ref获取子组件示例，同样可以实现(数据传递)通讯
+
+this.$nextTick(cb)
+把cb回调函数延迟到dom重新渲染完成完毕后执行
+(操作 dom 时，如果需要依赖于更新后的 dom ，应在 this.$nextTick 的cb里面进行该操作)
+
+--------------------------------------
+动态组件：<component :is="要渲染的组件" />
+    可以理解为一个空组件（组件占位符），可以动态地加入需要渲染的组件
+    作用：通过is的值可以动态切换组件
+
+keep-alive缓存组件：
+    当is值变化时，会显示相应的组件，注意此时当前显示的组件会销毁
+    用keep-alive组件包裹component 可以让展示过的组件不被销毁(进入缓存区)：
+    <keep-alive>
+        <component :is="要渲染的组件" />
+    </keep-alive>
+
+    使用keep-alive组件之后，要渲染的组件衍生出两个声明周期函数，
+    以便我们在组件处于显示与缓存状态实现交互：
+    组件被激活：activated()
+    组件被缓存：deactivated()
+
+    include属性指定需要被缓存的组件
+    <keep-alive include="组件1,组件2.....">
+        <component :is="要渲染的组件" />
+    </keep-alive>
+
+    exclude属性指定不被缓存的组件
+    <keep-alive exclude="组件1,组件2.....">
+        <component :is="要渲染的组件" />
+    </keep-alive>
+
+    注意：include和exclude属性不能同时使用
+
+--------------------------------------
+插槽slot:
+    <slot>的内容由组件的子节点填充：
+        <Com01>
+            <p>hello</p>
+        </Com01>
+        然后在 Com01 的 template 里面可以使用<slot>获取到:<p>hello</p>
+
+多个slot:
+    使用v-slot:指定lost的名称  (注意v-slot属性只能在 template 或 自定义组件中使用)
+     <Com01>
+        <template v-slot:名称1>
+            <p>hello</p>
+        </template>
+        <template v-slot:名称2>
+            <p>你好</p>
+        </template>
+        <Com02 v-slot:名称3/>
+    </Com01>
+        然后在 Com01 的  <slot name:'名称1'>获取到:<p>hello</p>
+                        <slot name:'名称2'>获取到:<p>你好</p>
+                        <slot name:'名称3'>获取到:<Com02 />
+    
+    v-slot    简写：     #
+    <Com01>
+        <Com02 #名称3 />
+    </Com01>
+
+后备slot:
+    如果使用组件时没有填充子节点，此时<slot>的默认内容(后备内容)就生效了
+    <slot>
+        <p>默认内容(后备内容)</p>
+    </slot>
+
+作用域插槽  (slot的属性传值)：
+    <slot name="slot01" aa="hello" bb="你好" />
+    使用插槽的时候可以获取所有属性包括aa、bb
+    <Com01>
+        <template #slot01="scope">
+            <p>{{scope.aa}}<p>
+            <span>{{scope.bb}}</span>
+        </template>
+    </Com01>
+
+    也可以使用解构赋值的方式按需获取属性
+    <Com01>
+        <template #slot01="{aa,bb}">
+            <p>{{aa}}<p>
+            <span>{{bb}}</span>
+        </template>
+    </Com01>
+
+--------------------------------------
+自定义指令：
+
+定义：
+directives:{
+    color:{
+        // 参数el是指使用color指令的元素
+        // 参数binding为使用指令时传入的值(注意是一个对象{value:传入值})
+        bind(el,binding){
+            el.style.color=binding.value
+        }
+    }
+}
+使用：
+<div v-color="'red'">通过自定义指令修改文字颜色</div>
+注意 v-color等号后面的内容为js表达式，所以要传入字符串red，要加引号
+
+
+update()函数使用：
+    update(el,binding){
+        el.style.color=binding.value
+    }
+
+    v-color传入值发生变化时，update()函数就会被触发 (组件初次渲染时不触发)
+    (注意区分:  bind()函数仅在组件初次渲染时触发)
+
+简写：
+如果bind()函数和update()函数内容完全相同自定义指令可以简写
+
+directives:{
+    color(el,binding){
+        el.style.color=binding.value
+    }
+}
+
+全局自定义指令：
+
+    在main.js中定义
+    Vue.directives('指令名称',{
+        bind(el,binding){},
+        update(el,binding){}
+    })
+
+    bind和update内容完全相同可以简写：
+    Vue.directives('指令名称',(el,binding)=>{})
+
+--------------------------------------
+路由：
+    url路径与组件之间的对应关系
+    是实现单页应用的技术基础
+
+https://router.vuejs.org/zh/
+
+安装：npm i vue-router@3.5.2 -S
+
+src/router/index.js中配置：
+
+    imoprt Vue from 'vue'
+    import VueRouter from 'vue-router'
+
+    // 给 Vue 项目添加 VueRouter 插件
+    Vue.use(VueRouter)
+
+    // 创建路由实例并对外共享
+    const router = new VueRouter( 路由表 )
+    export default router
+
+
+main.js中配置：
+
+    // 引入路由
+    import router from '@/router/index.js'
+
+    new Vue({
+    render: h => h(App),
+    // 挂载路由
+    router:router
+    }).$mount('#app')
+
+
+路由表：
+    import 组件1 from '...'
+    import 组件2 from '...'
+    import 组件3 from '...'
+
+    routList={
+        routes:[
+            {path:'/路径1',component:组件1},
+            {path:'/路径2',component:组件2},
+            {path:'/路径3',component:组件3},
+            ...
+        ]
+    }
+
+
+路由使用：
+    路由渲染：<router-view /> 组件
+    当url路径与路由表的路径匹配时，相应的组件就被渲染到 <router-view /> 处
+    所以可以把 <router-view /> 理解为路由组件的占位符
+
+    路由切换：<router-link />组件
+    <router-link to="/路径xx" />       实现路径的切换
+
+
+路由重定向：
+    
+    routes:[
+        // 把 根路径 重定向到 路径1
+            {path='/',redirect='/路径1'}
+            {path:'/路径1',component:组件1},
+            {path:'/路径2',component:组件2},
+            ...
+        ]
+
+嵌套路由：
+
+    {
+        path:'/路径1',component:组件1,
+        children:[
+            // 注意子路由路径使用相对路径(相对于父路由)
+            {path:'子路径1',component:子路由1},
+            {path:'子路径2',component:子路由2},
+            // 父组件渲染时，如果希望让子路由同时渲染出来，可以设定默认子路由
+            {path:'',component:默认子路由}
+        ]
+    }
+
+路由传参：
+
+    url携带params参数：
+
+        {path:'/路径/:参数',component:组件}
+
+        组件中可以通过 this.$route.params 获取携带的参数
+
+    url参数添加到组件的props:
+
+        {path:'/路径/:参数',component:组件,props:true}
+
+        组件中可以到 props 中接收参数
+
+    url携带query参数：
+
+        query参数又称查询参数，无须在路由表中声明与配置
+        <router-link to="/路径xx?参数1=值1&参数2=值2" />
+        组件中可以通过 this.$route.query 获取查询参数
+
+
+编程式导航：
+
+    this.$router.push('路径')
+    跳转到指定路径，同时增加1条历史记录
+
+    this.$router.replace('路径')
+    跳转到指定路径，新路径替换当前路径的历史记录
+
+    this.$router.go(数字)
+    根据历史记录前进或后退
+
+
+导航守卫：
+
+    管理路由的访问权限
+    // router/index.js中添加全局前置守卫
+    router.beforeEach(fn)
+
+    只要发生路由跳转，fn都会被调用
+    function fn(to,from,next){
+
+        // to      --可以获取将要访问的路由组件的信息
+        // from    --可以获取将要离开的路由组件的信息
+        // next    --是个函数:
+                            next()          路由放行，允许本次路由导航
+                            next('路径1')   路由变更，本次路由导航到 路径1
+                            next(false)     禁止放行，停留在当前路径
+
+        // 把 xxx 路径设定为需要登录权限访问
+        if(to.path === xxx){
+            const token = localstorage.getItem('token')
+            if(token){
+                next()
+            }else{
+                next('/login')
+            }
+        }else{
+            next()
+        }
+    }
+
+
+    多个路径设定权限：
+        const pathAry=['路径1','路径2','路径3',...]
+        if(pathary.includes(to.path)){....}
+
+
+--------------------------------------
+打包配置：
+https://cli.vuejs.org/zh/config/
+
+vue.config.js中进行配置：
+
+module.exports = {
+    // publicPath 默认值为'/',打包出来的项目需要使用 http 协议打开
+    // 当 publicPath 值为 '' 或 './' 时，打包出来的index.html可以直接双击打开（file协议打开）
+    publicPath:''
+}
+
